@@ -5,6 +5,8 @@ import Fields from '@/components/Fields'
 import Login from '@/components/Login'
 import InsertField from '@/components/InsertField';
 import Thanks from '@/components/Thanks';
+import ThanksV2 from '@/components/Thanks-V2';
+import ListField from '@/components/ListField';
 
 
 Vue.use(Router)
@@ -35,6 +37,14 @@ export default new Router({
             path: '/thank-you',
             name: 'thank-you',
             component: Thanks
+        }, {
+            path: '/thank-you-farmer',
+            name: 'thank-you-farmer',
+            component: ThanksV2
+        }, {
+            path: '/list-field',
+            name: 'list-field',
+            component: ListField
         },
     ]
 })

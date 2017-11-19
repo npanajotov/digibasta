@@ -132,6 +132,14 @@
         padding: 30px;
     }
 
+    @media screen and (max-width: 768px) {
+        .modales {
+            position: fixed;
+            width: 100%;
+            top: 0
+        }
+    }
+
     .overlay {
         background: rgba(0, 0, 0, 0.6);
         position: fixed;

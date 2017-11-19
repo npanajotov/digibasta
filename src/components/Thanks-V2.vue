@@ -12,7 +12,7 @@
                          style="background-color: rgba(255,255,255,0.63); border-radius: 5px; margin:auto;display: table">
                         <div class="card-content">
                             <p class="title">
-                                Tvoj zahtev je prosleđen Miroslavu.
+                                Uspešno ste dodali svoju njivu.
                             </p>
                             <p>
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, adipisci commodi cupiditate, eius et eveniet explicabo

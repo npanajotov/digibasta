@@ -221,8 +221,9 @@
 
                 console.log(data);
                 axios.post(window._api + "/list").then(() => {
-
                 });
+                this.$router.push('thank-you-farmer');
+
 //                private List<Fruit> fruitList;
             }
         }

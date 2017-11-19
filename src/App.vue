@@ -6,11 +6,13 @@
                     <img src="./assets/logo.png">
                     <span style="margin-left:10px; color:#fff; font-size:18px; position: relative; top:5px">Tvoja bašta, Online bašta</span>
                 </router-link>
+
                 <div class="navbar-end">
                     <router-link :to="{name:'home'}" class="navbar-item" tag="a">Naslovna</router-link>
                     <router-link :to="{name:'fields'}" class="navbar-item" tag="a">Njive</router-link>
                     <!--<router-link :to="{name:'login'}" class="navbar-item" tag="a">Pristup</router-link>-->
                     <router-link :to="{name:'insert-field'}" class="navbar-item" tag="a">Unos njive</router-link>
+                    <router-link :to="{name:'list-field'}" class="navbar-item" tag="a">Lista zahteva</router-link>
                 </div>
             </div>
         </nav>
@@ -41,4 +43,9 @@
         background: transparent !important;
     }
 
+    @media screen and (max-width: 768px) {
+        .navbar-end{
+            display: none;
+        }
+    }
 </style>

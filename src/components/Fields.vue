@@ -1,7 +1,7 @@
 <template>
     <div class="columns">
-        <div class="column is-half" style="overflow: hidden; ">
-            <div style="position: fixed;width: 100%;height: 100%;">
+        <div class="column is-half is-hidden-mobile" style="overflow: hidden;">
+            <div style="position: fixed;width: 100%;height: 100%;" id="map-container">
                 <gmap-map
                         :center="{lat: 44.221583765457964, lng:22.73895263671875}"
                         :zoom="8" class="map">
@@ -14,9 +14,59 @@
                 </gmap-map>
             </div>
         </div>
-        <div class="column is-half fields-list">
-            <map-filter></map-filter>
+        <div class="column is-half fields-list is-mobile">
+            <!--<map-filter></map-filter>-->
+            <div class="filters">
+
+                <div class="field is-grouped">
+                    <div class="control has-icons-left">
+                        <div class="select">
+                            <select v-model="selectedFruit">
+                                <option value="0">Izaberite voće/povrće</option>
+                                <option v-for="fruit in listFruits" :value="fruit.name">{{fruit.name}}</option>
+                            </select>
+                        </div>
+                        <span class="icon is-small is-left">
+                    <i class="fa fa-hand-lizard-o"></i>
+                </span>
+                    </div>
+                    <div class="control has-icons-left">
+                        <div class="select">
+                            <select>
+                                <option>Okrug</option>
+                                <option>Vojvodina</option>
+                                <option>Beogradski okrug</option>
+                                <option>Šumadija i zapadna Srbija</option>
+                                <option>Južna i istočna Srbija</option>
+                                <option>Kosovo i Metohija</option>
+
+                            </select>
+                        </div>
+                        <span class="icon is-small is-left">
+                    <i class="fa fa-globe"></i>
+                </span>
+                    </div>
+                    <!--<div class="control has-icons-left">-->
+                        <!--<div class="select">-->
+                            <!--<select>-->
+                                <!--<option>Sortiranje</option>-->
+                                <!--<option>Od najjeftnijeg</option>-->
+                                <!--<option>Od najskupljeg</option>-->
+                                <!--<option>Po broju preporuka</option>-->
+
+
+                            <!--</select>-->
+                        <!--</div>-->
+                        <!--<span class="icon is-small is-left">-->
+                    <!--<i class="fa fa-sort-amount-desc"></i>-->
+                <!--</span>-->
+                    <!--</div>-->
+                </div>
+            </div>
             <hr>
+            <div v-if="fields.length === 0">
+                <h2 class="title" style="margin-bottom:20px">Nema rezultata</h2>
+            </div>
             <div class="columns is-multiline is-mobile" v-if=" Object.keys(selectedField).length === 0">
                 <div class="column is-half" v-for="item in fields" @click="selectField(item)">
                     <div class="field-item">
@@ -134,17 +184,38 @@
         },
         created() {
             this.getFields();
+            this.getFruits();
         },
         data() {
             return {
                 fields: [],
                 selectedField: {},
-                modal: false
+                modal: false,
+                listFruits: [],
+                selectedFruit: 0
             }
+        },
+        watch: {
+            selectedFruit: {
+                handler: function (val) {
+                    if (val == 0) {
+                        this.getFields()
+                    } else {
+                        this.getByFruit(val);
+                    }
+                },
+                deep: true
+            },
         },
         methods: {
             getFields() {
                 axios.get(window._api + '/getAll').then(response => {
+                    this.fields = response.data;
+                })
+            },
+            getByFruit(fruit) {
+
+                axios.get(window._api + '/getAllByFruitName/' + fruit).then(response => {
                     this.fields = response.data;
                 })
             },
@@ -153,11 +224,15 @@
                 return images("./" + img);
             },
             selectField(item) {
-                console.log(item);
                 this.selectedField = item;
             },
             showModal() {
                 this.modal = !this.modal;
+            },
+            getFruits() {
+                axios.get(window._api + '/getAll/Fruit').then(response => {
+                    this.listFruits = response.data;
+                });
             }
         }
     }
@@ -308,5 +383,11 @@
 
     .field-item .field-footer .type-field {
         float: right;
+    }
+
+    @media screen and(max-width: 768px) {
+        #map-container {
+            display: none !important;
+        }
     }
 </style>
