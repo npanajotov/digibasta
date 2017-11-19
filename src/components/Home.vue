@@ -1,7 +1,11 @@
 <template>
     <div>
-        <img src="../assets/bg.png" alt="">
+        <img src="../assets/bg.png" alt="" style="position: fixed; width:100%;height:100%; object-fit: cover">
         <div class="container">
+            <div class="box">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium aliquam corporis doloremque ea exercitationem id ipsam iste, iusto magni, nostrum numquam odit perspiciatis provident quos ratione sed temporibus veritatis.
+            </div>
+
         </div>
     </div>
 </template>

@@ -48,11 +48,25 @@
                         <label class="label">Tip</label>
                         <div class="select">
                             <select v-model="type">
-                                <option value="1">Cela njiva</option>
-                                <option value="2">Deo njive</option>
+                                <option value="0">Basta</option>
+                                <option value="1">Njiva</option>
                             </select>
                         </div>
                     </div>
+                    <div class="field">
+                        <label class="label">Vrsta</label>
+                        <div class="select">
+                            <select v-model="type_field">
+                                <option value="1">Organski uzgoj</option>
+                                <option value="2">Neorganski uzgoj</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h3 class="title is-3">
+                        Voće i povrće koje možete da uzgajate:
+                    </h3>
+
                     <div class="field is-grouped is-grouped-multiline">
                         <div class="tags has-addons" v-for="item in listFruits"
                              @click="addItem(item)" style="margin-bottom: 1rem; margin-right:1rem">
@@ -62,14 +76,30 @@
                                 </span>
                         </div>
                     </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Naziv voca</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control">
+                                    <input class="input" type="number"
+                                           placeholder="Unesite cenu po aru...">
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <hr>
                     <div class="field is-grouped is-grouped-multiline">
-                        <div class="tags has-addons" v-for="item in listMehanic"
-                             @click="addItem(item)" style="margin-bottom: 1rem; margin-right:1rem">
-                            <span class="tag">{{item.name}}</span>
-                            <span class="tag" :class="item.selected ? 'is-primary' : 'is-danger'"><i
-                                    class="fa fa-checked"></i>
-                                </span>
+                        <div class="tags has-addons" v-for="mitem in listMehanic"
+                             @click="addMehanic(mitem)" style="margin-bottom: 1rem; margin-right:1rem">
+                            <span class="tag">{{mitem.name}}</span>
+                            <span class="tag" :class="mitem.selected ? 'is-primary' : 'is-danger'">
+                                <i class="fa fa-checked"></i>
+                            </span>
                         </div>
                     </div>
 
@@ -91,7 +121,7 @@
                         :position="markers.position"
                         :clickable="true"
                         :draggable="true"
-                        :icon="{url: 'https://i.imgur.com/r7Kr2xn.png'}"
+                        :icon="{url: 'https://i.imgur.com/HTjBJKn.png'}"
                 ></gmap-marker>
 
             </gmap-map>
@@ -115,6 +145,7 @@
                 description: '',
                 area: '',
                 type: '',
+                type_field: '',
                 width: '',
                 markers: {},
                 fruits: [],
@@ -128,7 +159,6 @@
             getLocation(event) {
                 this.$nextTick(() => {
                     let position = {lat: event.latLng.lat(), lng: event.latLng.lng()};
-                    this.globalPostion = position;
                     this.getAddress(position)
                 });
 
@@ -154,6 +184,13 @@
             addItem(item) {
                 item.selected = true;
             },
+            addMehanic(item) {
+                this.listMehanic.forEach(el => {
+                    if (el.id === item.id) {
+                        el.selected = !el.selected;
+                    }
+                });
+            },
             submit() {
                 let user = {
                     "id": "5a10c30fa8428a45ecb88cf1",
@@ -163,6 +200,11 @@
                     "password": "nekasifra",
                     "type": 1
                 };
+
+                let mehanicList = this.listMehanic.filter(el => {
+                    if (el.selected) return el;
+                });
+
                 let data = {
                     name: this.name,
                     area: this.area,
@@ -172,13 +214,16 @@
                     width: this.width,
                     user: user,
                     image: 'njiva1.jpg',
+                    type: this.type,
+                    type_field: this.type_field,
+                    mechanicList: mehanicList
                 };
 
                 console.log(data);
-//                private int type;
-//                private List<Mechanic> mechanicList;
+                axios.post(window._api + "/list").then(() => {
+
+                });
 //                private List<Fruit> fruitList;
-//                private int type_field;
             }
         }
     }
