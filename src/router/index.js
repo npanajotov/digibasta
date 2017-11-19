@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import Fields from '@/components/Fields'
 import Login from '@/components/Login'
 import InsertField from '@/components/InsertField';
+import Thanks from '@/components/Thanks';
 
 
 Vue.use(Router)
@@ -29,6 +30,11 @@ export default new Router({
             path: '/insert-field',
             name: 'insert-field',
             component: InsertField
+        },
+        {
+            path: '/thank-you',
+            name: 'thank-you',
+            component: Thanks
         },
     ]
 })

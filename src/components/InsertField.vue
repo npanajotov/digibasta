@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <div class="field">
-                        <label class="label">Adresa</label>
+                        <label class="label">Okrug</label>
                         <div class="select">
                             <select v-model="area">
                                 <option value="Vojvodina">Vojvodina</option>
@@ -53,34 +53,38 @@
                             </select>
                         </div>
                     </div>
-                        <div class="field is-grouped is-grouped-multiline">
-                            <div class="tags has-addons" v-for="item in listFruits"
-                                 @click="addItem(item)" style="margin-bottom: 1rem; margin-right:1rem">
-                                <span class="tag">{{item.name}}</span>
-                                <span class="tag" :class="item.selected ? 'is-primary' : 'is-danger'"><i
-                                        class="fa fa-checked"></i>
+                    <div class="field is-grouped is-grouped-multiline">
+                        <div class="tags has-addons" v-for="item in listFruits"
+                             @click="addItem(item)" style="margin-bottom: 1rem; margin-right:1rem">
+                            <span class="tag">{{item.name}}</span>
+                            <span class="tag" :class="item.selected ? 'is-primary' : 'is-danger'"><i
+                                    class="fa fa-checked"></i>
                                 </span>
-                            </div>
                         </div>
+                    </div>
                     <hr>
-                        <div class="field is-grouped is-grouped-multiline">
-                            <div class="tags has-addons" v-for="item in listMehanic"
-                                 @click="addItem(item)" style="margin-bottom: 1rem; margin-right:1rem">
-                                <span class="tag">{{item.name}}</span>
-                                <span class="tag" :class="item.selected ? 'is-primary' : 'is-danger'"><i
-                                        class="fa fa-checked"></i>
+                    <div class="field is-grouped is-grouped-multiline">
+                        <div class="tags has-addons" v-for="item in listMehanic"
+                             @click="addItem(item)" style="margin-bottom: 1rem; margin-right:1rem">
+                            <span class="tag">{{item.name}}</span>
+                            <span class="tag" :class="item.selected ? 'is-primary' : 'is-danger'"><i
+                                    class="fa fa-checked"></i>
                                 </span>
-                            </div>
                         </div>
+                    </div>
 
 
                 </div>
+                <button type="button" class="button is-info is-fullwidth" @click="submit()">
+                    <span>Dodaj njivu</span>
+                </button>
             </div>
+
         </div>
         <div class=" column is-half">
             <gmap-map
                     :center="{lat: 44.79742899855565, lng:20.76141357421875}"
-                    :zoom="8"
+                    :zoom="11"
                     style="width: 100%; height: 100vh;"
                     @click="getLocation($event)">
                 <gmap-marker
@@ -124,6 +128,7 @@
             getLocation(event) {
                 this.$nextTick(() => {
                     let position = {lat: event.latLng.lat(), lng: event.latLng.lng()};
+                    this.globalPostion = position;
                     this.getAddress(position)
                 });
 
@@ -148,6 +153,32 @@
             },
             addItem(item) {
                 item.selected = true;
+            },
+            submit() {
+                let user = {
+                    "id": "5a10c30fa8428a45ecb88cf1",
+                    "name": "Zika",
+                    "email": "neko@gmail.com",
+                    "phoneNumber": "0641234567",
+                    "password": "nekasifra",
+                    "type": 1
+                };
+                let data = {
+                    name: this.name,
+                    area: this.area,
+                    position: this.markers.position,
+                    address: this.markers.address,
+                    description: this.description,
+                    width: this.width,
+                    user: user,
+                    image: 'njiva1.jpg',
+                };
+
+                console.log(data);
+//                private int type;
+//                private List<Mechanic> mechanicList;
+//                private List<Fruit> fruitList;
+//                private int type_field;
             }
         }
     }

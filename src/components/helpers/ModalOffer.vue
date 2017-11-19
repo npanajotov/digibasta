@@ -18,27 +18,33 @@
                     </div>
                 </div>
                 <div v-if="fruits.length">
-                    <ul>
-                        <li v-for="fruit in fruits" style="margin-bottom:10px;">
-                            <div class="field is-horizontal">
-                                <div class="field-label is-normal">
-                                    <label class="label"> <i class="fa fa-close" @click="remove(fruit)"></i>
-                                        {{fruit.name}}</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <p class="control">
-                                            <input class="input" type="number"
-                                                   placeholder="Koliku povrsinu njive zelite za izabrano voće/povrće u arima?"
-                                                   @change="addPrice($event)">
-                                        </p>
+                    <form action="#">
+                        <ul>
+                            <li v-for="fruit in fruits" style="margin-bottom:10px;">
+                                <div class="field is-horizontal">
+                                    <div class="field-label is-normal">
+                                        <label class="label"> <i class="fa fa-close" @click="remove(fruit)"></i>
+                                            {{fruit.name}}</label>
+                                    </div>
+                                    <div class="field-body">
+                                        <div class="field">
+                                            <p class="control">
+                                                <input class="input" type="number"
+                                                       placeholder="Koliku povrsinu njive zelite za izabrano voće/povrće u arima?"
+                                                       @change="addPrice($event, fruit.pricePerWidth)">
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    </form>
                     Ukupna povrsina: {{sumWidth}} (u arima)
                     Ukupna cena (cena po aru * broj ari): {{sumPrice}}
+                    <hr>
+                    <button type="button" class="button is-info is-fullwidth" @click="submit()">
+                        <span>Zatraži ponudu</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -82,11 +88,33 @@
                 });
             },
 
-            addPrice(e) {
+            addPrice(e, price) {
                 if (e.target.value) {
                     this.sumWidth += parseFloat(e.target.value);
+                    this.sumPrice += price * this.sumWidth;
                 }
             },
+            submit() {
+                let tempUser = {
+                    "id": "5a10c30fa8428a45ecb88cf3",
+                    "name": "Hipster",
+                    "email": "hipster@gmail.com",
+                    "phoneNumber": "0641334567",
+                    "password": "nekasifra",
+                    "type": 0
+                };
+                let data = {
+                    'aggroField': this.item,
+                    'width': this.sumWidth,
+                    'fruit': this.fruits,
+                    'farmer': this.item.user,
+                    'user': tempUser,
+                    'status': 0
+                };
+                axios.post(window._api + '/insertOffer', data).then(() => {
+                    this.$router.push('thank-you');
+                })
+            }
         }
     }
 </script>
